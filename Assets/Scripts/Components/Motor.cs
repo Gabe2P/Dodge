@@ -14,27 +14,24 @@ public class Motor : MonoBehaviour
     public float RotationSpeed;
     private float curRotationSpeed = 0f;
 
-    private Rigidbody2D motor = null;
+    public Rigidbody2D motor = null;
 
     private void Awake()
     {
         motor = GetComponent<Rigidbody2D>();
         input = GetComponent<InputManager>();
+        curSpeed = SpeedCurve.Evaluate(0);
     }
 
     private void Update()
     {
-        if (GameManager.Instance != null)
-        {
-            curSpeed = SpeedCurve.Evaluate(GameManager.Instance.GetCurrentScore());
-        }
-        else
-        {
-            curSpeed = 0;
-        }
-
         motor.velocity = transform.up * curSpeed;
         motor.MoveRotation(motor.rotation + curRotationSpeed * Time.deltaTime);
+    }
+
+    private void UpdateSpeed(int amount)
+    {
+        curSpeed = SpeedCurve.Evaluate(amount);
     }
 
     private void UpdateRotation(InputManager.inputDirection current)
@@ -56,10 +53,18 @@ public class Motor : MonoBehaviour
     private void OnEnable()
     {
         input.onDirectionChange += UpdateRotation;
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.onScoreChange += UpdateSpeed;
+        }
     }
 
     private void OnDisable()
     {
         input.onDirectionChange += UpdateRotation;
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.onScoreChange += UpdateSpeed;
+        }
     }
 }

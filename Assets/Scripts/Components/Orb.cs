@@ -9,7 +9,7 @@ using UnityEngine;
 public class Orb : MonoBehaviour, ICollectable
 {
     public OrbType orbType = null;
-    public Transform spawnChecker = null;
+    public Spawner spawner = null;
     private ToggleGameObjectComponent toggleScript;
 
     private void Awake()
@@ -32,10 +32,10 @@ public class Orb : MonoBehaviour, ICollectable
         toggleScript.SetToggleObject(source as GameObject);
         toggleScript.Toggle();
 
-        if (GameManager.Instance != null)
+        if (GameManager.Instance != null &&  spawner != null)
         {
             GameManager.Instance.ChangeScore(orbType.GetScore());
-            SpawnManager.Instance.RelocateObject(this.transform);
+            this.transform.position = spawner.transform.position;
         }
 
         toggleScript.Toggle();

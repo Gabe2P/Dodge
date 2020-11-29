@@ -2142,7 +2142,6 @@ GameObject:
   - component: {fileID: 1338093851}
   - component: {fileID: 1338093852}
   - component: {fileID: 1338093850}
-  - component: {fileID: 1338093853}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2189,22 +2188,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73366ea9256ee694d8731f55e3de2d69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 0}
   currentScore: 0
-  scoreText: {fileID: 2144752961}
+  spawnerList: []
   musicSounds: []
   SFXSounds: []
---- !u!114 &1338093853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1338093849}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a1875c4d920dae46a469a59126861a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1413296086 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1413296086, guid: e752e67c35ceb2240b4b58d87ed4e92c,
@@ -2324,6 +2312,91 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1543553787}
   m_CullTransparentMesh: 0
+--- !u!1 &1549748031
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1549748033}
+  - component: {fileID: 1549748032}
+  - component: {fileID: 1549748034}
+  m_Layer: 0
+  m_Name: Orb Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1549748032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1549748031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a1875c4d920dae46a469a59126861a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DistanceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 50164.516
+      value: 49949.824
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  player: {fileID: 0}
+--- !u!4 &1549748033
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1549748031}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &1549748034
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1549748031}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &1643536364
 GameObject:
   m_ObjectHideFlags: 0
@@ -2982,7 +3055,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orbType: {fileID: 11400000, guid: b89749bffdcc87f4c9908d466e64a1d9, type: 2}
-  spawnChecker: {fileID: 1338093851}
+  spawner: {fileID: 1549748032}
 --- !u!114 &1988076975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3023,6 +3096,7 @@ GameObject:
   - component: {fileID: 2144752960}
   - component: {fileID: 2144752962}
   - component: {fileID: 2144752961}
+  - component: {fileID: 2144752963}
   m_Layer: 5
   m_Name: Score Text
   m_TagString: Untagged
@@ -3089,6 +3163,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2144752959}
   m_CullTransparentMesh: 0
+--- !u!114 &2144752963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144752959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b24318bdf79b09143a5612a4afe9995f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreText: {fileID: 2144752961}
 --- !u!1001 &2250864364375038676
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3096,37 +3183,40 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 536670171, guid: e752e67c35ceb2240b4b58d87ed4e92c, type: 3}
-      propertyPath: m_IsTrigger
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 536670171, guid: e752e67c35ceb2240b4b58d87ed4e92c, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1413296086, guid: e752e67c35ceb2240b4b58d87ed4e92c, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2250864363966838024, guid: e752e67c35ceb2240b4b58d87ed4e92c,
-        type: 3}
-      propertyPath: m_Interpolate
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2250864363966838024, guid: e752e67c35ceb2240b4b58d87ed4e92c,
-        type: 3}
-      propertyPath: m_CollisionDetection
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2250864363966838030, guid: e752e67c35ceb2240b4b58d87ed4e92c,
         type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 2250864363966838030, guid: e752e67c35ceb2240b4b58d87ed4e92c,
+    - target: {fileID: 2250864363966838031, guid: e752e67c35ceb2240b4b58d87ed4e92c,
         type: 3}
-      propertyPath: m_Layer
-      value: 8
+      propertyPath: SpeedCurve.m_Curve.Array.data[0].inSlope
+      value: 0.0032777686
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250864363966838031, guid: e752e67c35ceb2240b4b58d87ed4e92c,
+        type: 3}
+      propertyPath: SpeedCurve.m_Curve.Array.data[0].outSlope
+      value: 0.0032777686
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250864363966838031, guid: e752e67c35ceb2240b4b58d87ed4e92c,
+        type: 3}
+      propertyPath: SpeedCurve.m_Curve.Array.data[1].value
+      value: 9.211388
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250864363966838031, guid: e752e67c35ceb2240b4b58d87ed4e92c,
+        type: 3}
+      propertyPath: SpeedCurve.m_Curve.Array.data[1].inSlope
+      value: 0.0032777686
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250864363966838031, guid: e752e67c35ceb2240b4b58d87ed4e92c,
+        type: 3}
+      propertyPath: SpeedCurve.m_Curve.Array.data[1].outSlope
+      value: 0.0032777686
+      objectReference: {fileID: 0}
+    - target: {fileID: 2250864363966838031, guid: e752e67c35ceb2240b4b58d87ed4e92c,
+        type: 3}
+      propertyPath: SpeedCurve.m_Curve.Array.data[1].time
+      value: 2505.176
       objectReference: {fileID: 0}
     - target: {fileID: 8290756088669583722, guid: e752e67c35ceb2240b4b58d87ed4e92c,
         type: 3}

@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 536670171}
   m_Layer: 8
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,17 +100,17 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 0.09
-      outSlope: 0.09
+      inSlope: 0.03975527
+      outSlope: 0.03975527
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 100
-      value: 10
-      inSlope: 0.09
-      outSlope: 0.09
+      time: 2502.1865
+      value: 100.4751
+      inSlope: 0.03975527
+      outSlope: 0.03975527
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -136,9 +136,9 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
-  m_Interpolate: 2
+  m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!212 &2250864363966838025
 SpriteRenderer:

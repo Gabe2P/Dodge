@@ -1,19 +1,25 @@
 ﻿//Written by Gabriel Tupy 11-28-2020
 //Last modified by Gabriel Tupy 11-28-2020
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public delegate void StateChange(int amount);
+    public event StateChange onScoreChange;
+
     public static GameManager Instance;
+    public GameObject Player = null;
+
     [SerializeField] private int currentScore = 0;
-    public Text scoreText = null;
+    [SerializeField] private List<Spawner> spawnerList = null;
 
     [Range(0,1)] private float MusicVolume;
-    [SerializeField] private Sound[] musicSounds;
+    public Sound[] musicSounds = null;
     [Range(0, 1)] private float SFXVolume;
-    [SerializeField] private Sound[] SFXSounds;
+    public Sound[] SFXSounds = null;
 
     //Establishing singleton pattern
     private void Awake()
@@ -29,11 +35,16 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
+    private void Start()
+    {
+        FindPlayer();
+    }
+
     private void Update()
     {
-        if (currentScore > 0)
+        if (Player == null)
         {
-            scoreText.text = currentScore.ToString();
+            FindPlayer();
         }
 
         if (AudioManager.Instance != null)
@@ -41,6 +52,34 @@ public class GameManager : MonoBehaviour
             AudioManager.Instance.SetMultipleVolumes(SFXSounds, SFXVolume);
             AudioManager.Instance.SetMultipleVolumes(musicSounds, MusicVolume);
         }
+    }
+
+    private void FindPlayer()
+    {
+        Motor[] listOfMotors = FindObjectsOfType<Motor>();
+        foreach (Motor motor in listOfMotors)
+        {
+            if (motor.CompareTag("Player"))
+            {
+                Player = motor.gameObject;
+                break;
+            }
+        }
+    }
+
+    public void CreateEnemy()
+    { 
+        
+    }
+
+    public void AddSpawner(Spawner spawner)
+    {
+        spawnerList.Add(spawner);
+    }
+
+    public void RemoveSpawner(Spawner spawner)
+    {
+        spawnerList.Remove(spawner);
     }
 
     public void ChangeMusicVolume(Slider slider)
@@ -55,11 +94,13 @@ public class GameManager : MonoBehaviour
     public void ResetScore()
     {
         currentScore = 0;
+        onScoreChange?.Invoke(currentScore);
     }
 
     public void ChangeScore(int amount)
     {
         currentScore += amount;
+        onScoreChange?.Invoke(currentScore);
     }
 
     public int GetCurrentScore()
