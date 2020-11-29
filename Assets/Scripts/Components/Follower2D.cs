@@ -2,11 +2,12 @@
 //Last modified by Gabriel Tupy 11-28-2020
 using UnityEngine;
 
-public class Follower : MonoBehaviour
+public class Follower2D : MonoBehaviour
 {
     public GameObject Target = null;
+    public Vector2 Offset = Vector2.zero;
     public AnimationCurve LerpTimeCurve = null;
-    public float curLerpTime = 0;
+    private float curLerpTime = 0;
 
     private void Update()
     {
@@ -23,7 +24,7 @@ public class Follower : MonoBehaviour
         //Follows target if target isn't null
         if (Target != null)
         {
-            this.transform.position = Vector3.Lerp(this.transform.position, new Vector3(Target.transform.position.x, Target.transform.position.y, -10), curLerpTime);
+            this.transform.position = Vector3.Slerp(this.transform.position, new Vector3(Target.transform.position.x + Offset.x, Target.transform.position.y + Offset.y, - 10), curLerpTime);
         }
     }
 }

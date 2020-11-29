@@ -11,14 +11,19 @@ public class AudioManager : MonoBehaviour
 
     public Sound[] sounds;
 
-    public static AudioManager instance;
+    public static AudioManager Instance;
 
     private void Awake()
     {
-        if (AudioManager.instance == null)
+        if (Instance != null && Instance != this)
         {
-            AudioManager.instance = this;
+            Destroy(this);
         }
+        else
+        {
+            Instance = this;
+        }
+        DontDestroyOnLoad(this);
 
         foreach (Sound s in sounds)
         {

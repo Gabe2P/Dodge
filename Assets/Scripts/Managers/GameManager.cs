@@ -36,10 +36,10 @@ public class GameManager : MonoBehaviour
             scoreText.text = currentScore.ToString();
         }
 
-        if (AudioManager.instance != null)
+        if (AudioManager.Instance != null)
         {
-            AudioManager.instance.SetMultipleVolumes(SFXSounds, SFXVolume);
-            AudioManager.instance.SetMultipleVolumes(musicSounds, MusicVolume);
+            AudioManager.Instance.SetMultipleVolumes(SFXSounds, SFXVolume);
+            AudioManager.Instance.SetMultipleVolumes(musicSounds, MusicVolume);
         }
     }
 
@@ -57,19 +57,29 @@ public class GameManager : MonoBehaviour
         currentScore = 0;
     }
 
-    public int GetCurrentScore()
-    {
-        return currentScore;
-    }
-
     public void ChangeScore(int amount)
     {
         currentScore += amount;
     }
 
+    public int GetCurrentScore()
+    {
+        return currentScore;
+    }
+
     public void StartGame()
     {
         SceneManager.LoadScene("GameScene");
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
     }
 
     public void QuitGame()
