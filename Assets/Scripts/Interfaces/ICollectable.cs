@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿//Written by Gabriel Tupy 11-28-2020
+//Last modified by Gabriel Tupy 11-28-2020
 
 public interface ICollectable
 {

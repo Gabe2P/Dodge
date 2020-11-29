@@ -1,5 +1,5 @@
 ﻿//Written by Gabriel Tupy 11-28-2020
-//Modified by Gabriel Tupy 11-28-2020
+//Last modified by Gabriel Tupy 11-28-2020
 
 using UnityEngine;
 
@@ -8,25 +8,10 @@ public class InputManager : MonoBehaviour
     public delegate void StateChange(inputDirection newDirection);
     public event StateChange onDirectionChange;
 
-    public static InputManager Instance = null;
-
     public enum inputDirection { None = 0, Left = -1, Right = 1};
     [SerializeField] private inputDirection curDirection;
 
     public bool useKeyBoardInput = false;
-
-    //Establishing singleton pattern
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
-    }
 
     private void Update()
     {
