@@ -1,5 +1,5 @@
 ﻿//Written by Gabriel Tupy 11-28-2020
-//Last modified by Gabriel Tupy 11-29-2020
+//Last modified by Gabriel Tupy 11-30-2020
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
     public GameObject Player = null;
+    public GameObject PlayerDeathEffect = null;
     public UIManager GUI = null;
 
     [SerializeField] private int currentScore = 0;
@@ -25,6 +26,7 @@ public class GameManager : MonoBehaviour
     public string[] musicSounds = null;
     [Range(0, 1)] private float SFXVolume = .5f;
     public string[] SFXSounds = null;
+    private bool useArrowKeys = false;
 
     //Establishing singleton pattern
     private void Awake()
@@ -80,6 +82,11 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if (Player != null)
+        {
+            Player.GetComponent<InputManager>()?.SetInputToKeyboard(useArrowKeys);
+        }
+
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.SetMultipleVolumes(SFXSounds, SFXVolume);
@@ -120,12 +127,19 @@ public class GameManager : MonoBehaviour
         return SFXVolume;
     }
 
+    public void SetArrowKeyInput(bool condition)
+    {
+        useArrowKeys = condition;
+    }
+
+    public bool GetArrowKeyInput()
+    {
+        return useArrowKeys;
+    }
+
     public void ToggleInputType(bool condition)
     {
-        if (Player != null)
-        {
-            Player.GetComponent<InputManager>()?.SetInputToKeyboard(condition);
-        }
+        useArrowKeys = condition;
     }
 
 
@@ -176,9 +190,27 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.Stop("ThemeSong");
+            AudioManager.Instance.Play("PlayerDied");
+        }
+        if (Player != null)
+        {
+            Player.SetActive(false);
+            GameObject clone = Instantiate(PlayerDeathEffect, Player.transform.position, Quaternion.identity);
+            Destroy(clone, .5f);
+        }
+        CameraShake.CameraZoom();
+        Invoke("EndGame", 1f);
+    }
+
+    public void EndGame()
+    {
         listOfEnemies = new List<EnemyAI>();
+        GUI.PauseGame();
+        GUI.GameOver();
         ResetScore();
-        GUI.RestartGame();
     }
 
 }

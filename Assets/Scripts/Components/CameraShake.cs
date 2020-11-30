@@ -1,5 +1,5 @@
 ﻿//Written by Gabriel Tupy 11-29-2020
-//Last modified by Gabriel Tupy 11-29-2020
+//Last modified by Gabriel Tupy 11-30-2020
 
 
 using UnityEngine;
@@ -22,17 +22,19 @@ public class CameraShake : MonoBehaviour
         switch (temp)
         {
             case 0:
-                Debug.Log("CameraShake1 Called");
                 anim.SetTrigger("CameraShake1");
                 break;
             case 1:
-                Debug.Log("CameraShake2 Called");
                 anim.SetTrigger("CameraShake2");
                 break;
             case 2:
-                Debug.Log("CameraShake3 Called");
                 anim.SetTrigger("CameraShake3");
                 break;
         }
+    }
+
+    public static void CameraZoom()
+    {
+        anim.SetTrigger("CameraZoom");
     }
 }

@@ -1,5 +1,5 @@
 ﻿//Written by Gabriel Tupy 11-28-2020
-//Last modified by Gabriel Tupy 11-29-2020
+//Last modified by Gabriel Tupy 11-30-2020
 using UnityEngine;
 
 [RequireComponent(typeof(InputManager))]
@@ -10,6 +10,7 @@ public class Motor : MonoBehaviour
 
     public AnimationCurve SpeedCurve;
     private float curSpeed = 0f;
+    public bool shouldMove = true;
 
     public float RotationSpeed;
     private float curRotationSpeed = 0f;
@@ -30,8 +31,11 @@ public class Motor : MonoBehaviour
             GameManager.Instance.onScoreChange += UpdateSpeed;
         }
 
-        motor.velocity = transform.up * curSpeed;
-        motor.MoveRotation(motor.rotation + curRotationSpeed * Time.deltaTime);
+        if (shouldMove)
+        {
+            motor.velocity = transform.up * curSpeed;
+            motor.MoveRotation(motor.rotation + curRotationSpeed * Time.deltaTime);
+        }
     }
 
     private void UpdateSpeed(int amount)

@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
+  PlayerDeathEffect: {fileID: 2421586051599298118, guid: 208770343b0d0b34095db1b51ca84fa1,
+    type: 3}
   GUI: {fileID: 0}
   currentScore: 0
   OrbSpawner: {fileID: 0}
@@ -78,10 +80,12 @@ MonoBehaviour:
   listOfEnemies: []
   musicSounds:
   - ThemeSong
+  - GameOver
   SFXSounds:
   - OrbCollected
   - EnemyKilled
   - ButtonClick
+  - PlayerDied
 --- !u!114 &6110490825296297310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,6 +119,30 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: ButtonClick
     clip: {fileID: 8300000, guid: 4927a052b0601fc4898bedfc955f455b, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: PlayerDied
+    clip: {fileID: 8300000, guid: d07aab64da429d646b88fbf4e1a6cc2f, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: GameOver
+    clip: {fileID: 8300000, guid: 88edf3cf7e617fe409a79f078c33b86e, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: EnemySpawned
+    clip: {fileID: 8300000, guid: 1f4428701d5fd3544b68cb539a562bcf, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: OrbSpawned
+    clip: {fileID: 8300000, guid: dbee8702ffc979444a2c291f6ba7c81a, type: 3}
     volume: 0.75
     pitch: 1
     loop: 0

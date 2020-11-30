@@ -1,5 +1,5 @@
 ﻿//Written by Gabriel Tupy 11-29-2020
-//Last modified by Gabriel Tupy 11-29-2020
+//Last modified by Gabriel Tupy 11-30-2020
 
 using System.Collections;
 using System.Collections.Generic;
@@ -10,8 +10,12 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private Text scoreText = null;
+    [SerializeField] private Text FinalScoreText = null;
     [SerializeField] private Slider musicSlider = null;
     [SerializeField] private Slider sfxSlider = null;
+    [SerializeField] private Toggle useArrowKeys = null;
+    public GameObject ScreenButtons = null;
+    public GameObject GameOverScreen = null;
 
     void ChangeScore(int amount)
     {
@@ -22,6 +26,7 @@ public class UIManager : MonoBehaviour
     {
         musicSlider.value = GameManager.Instance.GetMusicVolume();
         sfxSlider.value = GameManager.Instance.GetSFXVolume();
+        useArrowKeys.isOn = GameManager.Instance.GetArrowKeyInput();
     }
 
     private void OnEnable()
@@ -60,6 +65,11 @@ public class UIManager : MonoBehaviour
 
     public void ToggleInput(Toggle toggle)
     {
+        useArrowKeys = toggle;
+        if (ScreenButtons != null)
+        {
+            ScreenButtons.SetActive(!toggle.isOn);
+        }
         GameManager.Instance.ToggleInputType(toggle.isOn);
     }
 
@@ -90,7 +100,18 @@ public class UIManager : MonoBehaviour
         {
             AudioManager.Instance.Stop("ThemeSong");
         }
+        this.ResumeGame();
         SceneManager.LoadScene("MainMenuScene");
+    }
+
+    public void GameOver()
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.Play("GameOver");
+        }
+        FinalScoreText.text = scoreText.text;
+        GameOverScreen.SetActive(true);
     }
 
     public void QuitGame()
