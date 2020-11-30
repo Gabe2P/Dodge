@@ -1,5 +1,5 @@
 ﻿//Written by Gabriel Tupy 11-28-2020
-//Last modified by Gabriel Tupy 11-28-2020
+//Last modified by Gabriel Tupy 11-29-2020
 
 using System.Collections;
 using System.Collections.Generic;
@@ -43,7 +43,7 @@ public class Spawner : MonoBehaviour
         RelocateObject(this.transform);
     }
 
-    private void RelocateObject(Transform obj)
+    public void RelocateObject(Transform obj)
     {
         if (player != null)
         {
@@ -57,7 +57,6 @@ public class Spawner : MonoBehaviour
         if (GameManager.Instance != null)
         {
             GameManager.Instance.onScoreChange += UpdateDistance;
-            GameManager.Instance.AddSpawner(this);
         }
     }
 
@@ -66,7 +65,6 @@ public class Spawner : MonoBehaviour
         if (GameManager.Instance != null)
         {
             GameManager.Instance.onScoreChange -= UpdateDistance;
-            GameManager.Instance.RemoveSpawner(this);
         }
     }
 }

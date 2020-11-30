@@ -1,38 +1,43 @@
 ﻿//Written by Gabriel Tupy 11-28-2020
-//Last modified by Gabriel Tupy 11-28-2020
+//Last modified by Gabriel Tupy 11-29-2020
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public delegate void StateChange(int amount);
     public event StateChange onScoreChange;
 
+    public delegate void InputChange();
+    public event InputChange onInputChange;
+
     public static GameManager Instance;
     public GameObject Player = null;
+    public UIManager GUI = null;
 
     [SerializeField] private int currentScore = 0;
-    [SerializeField] private List<Spawner> spawnerList = null;
-
-    [Range(0,1)] private float MusicVolume;
-    public Sound[] musicSounds = null;
-    [Range(0, 1)] private float SFXVolume;
-    public Sound[] SFXSounds = null;
+    [SerializeField] private Spawner OrbSpawner = null;
+    public AnimationCurve EnemySpawnCurve = null;
+    [SerializeField] private Spawner EnemySpawner = null;
+    public GameObject[] enemyPrefabs = null;
+    [SerializeField] private List<EnemyAI> listOfEnemies = new List<EnemyAI>();
+    [Range(0,1)] private float MusicVolume = .5f;
+    public string[] musicSounds = null;
+    [Range(0, 1)] private float SFXVolume = .5f;
+    public string[] SFXSounds = null;
 
     //Establishing singleton pattern
     private void Awake()
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         else
         {
             Instance = this;
         }
-        DontDestroyOnLoad(this);
+        DontDestroyOnLoad(this.gameObject);
     }
 
     private void Start()
@@ -45,6 +50,34 @@ public class GameManager : MonoBehaviour
         if (Player == null)
         {
             FindPlayer();
+        }
+        if (GUI == null)
+        {
+            GUI = FindObjectOfType<UIManager>();
+        }
+        if (OrbSpawner == null)
+        {
+            Spawner[] listOfSpawners = FindObjectsOfType<Spawner>();
+            foreach (Spawner spawner in listOfSpawners)
+            {
+                if (spawner.CompareTag("OrbSpawner"))
+                {
+                    OrbSpawner = spawner;
+                    break;
+                }
+            }
+        }
+        if (EnemySpawner == null)
+        {
+            Spawner[] listOfSpawners = FindObjectsOfType<Spawner>();
+            foreach (Spawner spawner in listOfSpawners)
+            {
+                if (spawner.CompareTag("EnemySpawner"))
+                {
+                    EnemySpawner = spawner;
+                    break;
+                }
+            }
         }
 
         if (AudioManager.Instance != null)
@@ -67,28 +100,50 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void CreateEnemy()
-    { 
-        
+    public void SetMusicVolume(float amount)
+    {
+        MusicVolume = amount;
     }
 
-    public void AddSpawner(Spawner spawner)
+    public float GetMusicVolume()
     {
-        spawnerList.Add(spawner);
+        return MusicVolume;
     }
 
-    public void RemoveSpawner(Spawner spawner)
+    public void SetSFXVolume(float amount)
     {
-        spawnerList.Remove(spawner);
+        SFXVolume = amount;
     }
 
-    public void ChangeMusicVolume(Slider slider)
+    public float GetSFXVolume()
     {
-        MusicVolume = Mathf.Clamp(slider.value, 0, 1);
+        return SFXVolume;
     }
-    public void ChangeSFXVolume(Slider slider)
+
+    public void ToggleInputType(bool condition)
     {
-        SFXVolume = Mathf.Clamp(slider.value, 0, 1);
+        if (Player != null)
+        {
+            Player.GetComponent<InputManager>()?.SetInputToKeyboard(condition);
+        }
+    }
+
+
+    public void SpawnEnemy(Spawner spawner, GameObject[] enemies)
+    {
+        if (listOfEnemies.Count < EnemySpawnCurve.Evaluate(currentScore) && (enemies != null || enemies.Length == 0))
+        {
+            for (int idx = listOfEnemies.Count; idx <= EnemySpawnCurve.Evaluate(currentScore)/100; idx++)
+            {
+                listOfEnemies.Add(Instantiate(enemies[Mathf.RoundToInt(Random.Range(0,enemies.Length - 1))], spawner.transform.position, Quaternion.identity).GetComponent<EnemyAI>());
+                spawner.RelocateObject(spawner.gameObject.transform);
+            }
+        }
+    }
+
+    public void RemoveEnemy(EnemyAI enemy)
+    {
+        listOfEnemies.Remove(enemy);
     }
 
     public void ResetScore()
@@ -100,17 +155,13 @@ public class GameManager : MonoBehaviour
     public void ChangeScore(int amount)
     {
         currentScore += amount;
+        SpawnEnemy(EnemySpawner, enemyPrefabs);
         onScoreChange?.Invoke(currentScore);
     }
 
     public int GetCurrentScore()
     {
         return currentScore;
-    }
-
-    public void StartGame()
-    {
-        SceneManager.LoadScene("GameScene");
     }
 
     public void ResumeGame()
@@ -123,8 +174,11 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
     }
 
-    public void QuitGame()
+    public void GameOver()
     {
-        Application.Quit();
+        listOfEnemies = new List<EnemyAI>();
+        ResetScore();
+        GUI.RestartGame();
     }
+
 }

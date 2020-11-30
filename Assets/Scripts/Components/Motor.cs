@@ -1,5 +1,5 @@
 ﻿//Written by Gabriel Tupy 11-28-2020
-//Last modified by Gabriel Tupy 11-28-2020
+//Last modified by Gabriel Tupy 11-29-2020
 using UnityEngine;
 
 [RequireComponent(typeof(InputManager))]
@@ -25,6 +25,11 @@ public class Motor : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.onScoreChange += UpdateSpeed;
+        }
+
         motor.velocity = transform.up * curSpeed;
         motor.MoveRotation(motor.rotation + curRotationSpeed * Time.deltaTime);
     }
@@ -62,6 +67,7 @@ public class Motor : MonoBehaviour
     private void OnDisable()
     {
         input.onDirectionChange += UpdateRotation;
+
         if (GameManager.Instance != null)
         {
             GameManager.Instance.onScoreChange += UpdateSpeed;

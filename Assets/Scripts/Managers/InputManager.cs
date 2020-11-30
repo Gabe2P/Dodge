@@ -38,6 +38,11 @@ public class InputManager : MonoBehaviour
         onDirectionChange?.Invoke(curDirection);
     }
 
+    public void SetInputToKeyboard(bool condition)
+    {
+        useKeyBoardInput = condition;
+    }
+
     public void SetInputDirectionToLeft()
     {
         curDirection = inputDirection.Left;

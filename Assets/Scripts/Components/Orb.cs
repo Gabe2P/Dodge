@@ -1,5 +1,5 @@
 ﻿//Written by Gabriel Tupy 11-28-2020
-//Last modified by Gabriel Tupy 11-28-2020
+//Last modified by Gabriel Tupy 11-29-2020
 
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using UnityEngine;
 public class Orb : MonoBehaviour, ICollectable
 {
     public OrbType orbType = null;
+    public GameObject CollectionEffect = null;
     public Spawner spawner = null;
     private ToggleGameObjectComponent toggleScript;
 
@@ -32,10 +33,15 @@ public class Orb : MonoBehaviour, ICollectable
         toggleScript.SetToggleObject(source as GameObject);
         toggleScript.Toggle();
 
+        CameraShake.ShakeCamera();
+
         if (GameManager.Instance != null &&  spawner != null)
         {
+            GameObject clone = Instantiate(CollectionEffect, this.transform.position, Quaternion.identity);
             GameManager.Instance.ChangeScore(orbType.GetScore());
+            AudioManager.Instance.Play("OrbCollected");
             this.transform.position = spawner.transform.position;
+            Destroy(clone, .5f);
         }
 
         toggleScript.Toggle();

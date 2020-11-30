@@ -46,10 +46,11 @@ public class AudioManager : MonoBehaviour
         s.source.volume = amount;
     }
 
-    public void SetMultipleVolumes(Sound[] sounds, float amount)
+    public void SetMultipleVolumes(string[] names, float amount)
     {
-        foreach (Sound s in sounds)
+        foreach (string name in names)
         {
+            Sound s = Array.Find(sounds, sound => sound.name == name);
             if (s == null && amount <= 1 && amount >= 0)
             {
                 Debug.LogWarning("Sound: " + name + " not found!");
@@ -96,6 +97,42 @@ public class AudioManager : MonoBehaviour
                 return;
             }
             s.source.Play();
+        }
+    }
+
+    public void Pause(string name)
+    {
+        if (name.Equals("") || name == null)
+        {
+            return;
+        }
+        else
+        {
+            Sound s = Array.Find(sounds, sound => sound.name == name);
+            if (s == null)
+            {
+                Debug.LogWarning("Sound: " + name + " not found!");
+                return;
+            }
+            s.source.Pause();
+        }
+    }
+
+    public void UnPause(string name)
+    {
+        if (name.Equals("") || name == null)
+        {
+            return;
+        }
+        else
+        {
+            Sound s = Array.Find(sounds, sound => sound.name == name);
+            if (s == null)
+            {
+                Debug.LogWarning("Sound: " + name + " not found!");
+                return;
+            }
+            s.source.UnPause();
         }
     }
 
